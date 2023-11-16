@@ -135,11 +135,10 @@ while(1){
    * 2. Inventory == 0 --> return 0
    * 3. Success --> return #inventory
    * */
-		size_t length = strlen(bookcode);
-		status[0] = bookcode[length - 1];
- 	status[1] = '\0';
-  bookcode[length - 1] = '\0';
-  checkValue(bookcode,status);
+		int length = (bookcode[0] - '0') * 10 + (bookcode[1] - '0');
+		status[0] = bookcode[length + 1];
+		status[1] = '\0';
+		bookcode[length + 1] = '\0';
 		if(status[0]=='U'){
 			std::cout << "Server H received " << bookcode << " code from the Main Server." << std::endl;
 		} else {
