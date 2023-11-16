@@ -1,0 +1,24 @@
+Name: Yi Liu
+USC ID: 7717540026
+
+In this assignment, I've finished all the functions listed in the assginment guid including the EXTRA CREDIT function.
+Users could check out books after login by input correct book code. Admin could check the inventory of a specific book after login with username admin and password Admin.
+The client and main server communicate through TCP. The main server communicate with backend servers through UDP.
+
+client.cpp The code file communicates with user and send command to the main server. After recieve feedback from the main server, it shows the result to user.
+serverM.cpp The code file recieve message from the client through TCP. It conducts the authentication process for users. When recieved book query, it communicate with backend server through UDP to process the query.
+serverS.cpp The code file recieve book code from main server through UDP. It manages science library. It either check out book or check the inventory and then send back result to the main server through UDP.
+serverL.cpp The code file recieve book code from main server through UDP. It manages literature library. It either check out book or check the inventory and then send back result to the main server through UDP.
+serverH.cpp The code file recieve book code from main server through UDP. It manages history library. It either check out book or check the inventory and then send back result to the main server through UDP.
+
+The printed messages are the same as the assignment guid.
+username and password are encoded as len(username)+username+password when it sent from client.cpp to serverM.cpp as char*.
+bookcode are encoded as bookcode + user identity as char*.
+All reply messages are integer.
+
+Idiosyncrasy:
+Bookcode can't be longer than 12 characters.
+
+Reused Code:
+All the socket initialization codes are copied from Beej's tutorial. All the copied codes have comment above indicating they are copied.
+The code finding local port number is inspired by the hints in the assignment guid.
