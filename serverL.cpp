@@ -138,20 +138,21 @@ while(1){
 		int length = (bookcode[0] - '0') * 10 + (bookcode[1] - '0');
 		status[0] = bookcode[length + 1];
 		status[1] = '\0';
-		bookcode[length + 1] = '\0';
-  checkValue(bookcode,status);
+		char* code = new char[length];
+		strncpy(code, bookcode + 2, length);
+		code[length] = '\0';
 		if(status[0]=='U'){
-			std::cout << "Server L received " << bookcode << " code from the Main Server." << std::endl;
+			std::cout << "Server L received " << code << " code from the Main Server." << std::endl;
 		} else {
-			std::cout << "Server L received an inventory status request for code " << bookcode << "." << std::endl;
+			std::cout << "Server L received an inventory status request for code " << code << "." << std::endl;
 		}
-
+	checkValue(bookcode,status);
 	if ((numbytes = sendto(sockfd, &result, sizeof(result), 0, (struct sockaddr *)&their_addr, addr_len)) == -1) {
 			perror("senderr: sendto");
 			exit(1);
 		}
 		if(status[0]=='U'){
-			std::cout << "Server L finished sending the availability status of code " << bookcode << " to the Main Server using UDP on port 42026." << std::endl;
+			std::cout << "Server L finished sending the availability status of code " << code << " to the Main Server using UDP on port 42026." << std::endl;
 		} else {
 			std::cout << "Server L finished sending the inventory status to the Main server using UDP on port 42026." << std::endl;
 		}
