@@ -237,7 +237,6 @@ int main() {
         } else {
             encodedBookcode.append( std::to_string(bookcode.length()+1) + bookcode + "U");
         }
-        std::cout << encodedBookcode << std::endl;
 
         // Send to Main Server
         if (send(sockfd, encodedBookcode.c_str(), encodedBookcode.size(), 0) == -1)

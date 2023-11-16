@@ -14,6 +14,7 @@
 #include <iostream>
 #include <map>
 #include <fstream>
+#include <ctype.h>
 
 
 #define LOCALHOST "127.0.0.1"
@@ -183,7 +184,7 @@ int main()
 	int udp_rv;
 	struct sockaddr_storage udp_their_addr;
 	int fromBackend;
-	socklen_t udp_addr_len;
+	socklen_t udp_addr_len = sizeof(udp_their_addr);;
 	char udp_s[INET6_ADDRSTRLEN];
 
 	memset(&udp_hints, 0, sizeof udp_hints);
@@ -293,7 +294,7 @@ int main()
              * 4. Send to backend, success --> return the #inventory
              */
             
-            else if(strlen(clientmsg) < 12){
+            else if(!isdigit(clientmsg[2])){
                 prepareBookcode(clientmsg,bookcode);
                 std::cout << "Main Server received the book request from client using TCP over port " << MY_TCP_PORT <<"."<< std::endl;
                 std::string decodedBookcode( bookcode );
