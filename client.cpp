@@ -16,7 +16,7 @@
 #define SERVER_TCP_PORT "45026"
 
 // Client's Variable
-std::string username, password, bookcode, copiedUsername, encodedBookcode;
+std::string username, password, bookcode, copiedUsername;
 
 
 // get sockaddr, IPv4 or IPv6: (copied from Beej's tutorial)
@@ -230,12 +230,14 @@ int main() {
         getBookCode();
 
         // Encode the bookcode with user identity
+        std::string encodedBookcode;
         if(bookcode.length() < 10 ) encodedBookcode.append("0");
         if(copiedUsername=="admin"){
             encodedBookcode.append( std::to_string(bookcode.length()+1) + bookcode + "A");
         } else {
             encodedBookcode.append( std::to_string(bookcode.length()+1) + bookcode + "U");
         }
+        std::cout << encodedBookcode << std::endl;
 
         // Send to Main Server
         if (send(sockfd, encodedBookcode.c_str(), encodedBookcode.size(), 0) == -1)

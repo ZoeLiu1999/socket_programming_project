@@ -138,15 +138,15 @@ while(1){
 		int length = (bookcode[0] - '0') * 10 + (bookcode[1] - '0');
 		status[0] = bookcode[length + 1];
 		status[1] = '\0';
-		char* code = new char[length];
-		strncpy(code, bookcode + 2, length);
-		code[length] = '\0';
+		char* code = new char[length-1];
+		strncpy(code, bookcode + 2, length-1);
+		code[length-1] = '\0';
 		if(status[0]=='U'){
 			std::cout << "Server L received " << code << " code from the Main Server." << std::endl;
 		} else {
 			std::cout << "Server L received an inventory status request for code " << code << "." << std::endl;
 		}
-	checkValue(bookcode,status);
+	checkValue(code,status);
 	if ((numbytes = sendto(sockfd, &result, sizeof(result), 0, (struct sockaddr *)&their_addr, addr_len)) == -1) {
 			perror("senderr: sendto");
 			exit(1);

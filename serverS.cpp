@@ -142,9 +142,9 @@ int main(void)
 		int length = (bookcode[0] - '0') * 10 + (bookcode[1] - '0');
 		status[0] = bookcode[length + 1];
 		status[1] = '\0';
-		char* code = new char[length];
-		strncpy(code, bookcode + 2, length);
-		code[length] = '\0'; 
+		char* code = new char[length-1];
+		strncpy(code, bookcode + 2, length-1);
+		code[length-1] = '\0'; 
 			if(status[0]=='U'){
 				std::cout << "Server S received " << code << " code from the Main Server." << std::endl;
 			} else {
