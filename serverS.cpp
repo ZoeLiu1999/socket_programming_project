@@ -14,6 +14,7 @@
 #include <sstream>
 #include <map>
 #include <string>
+#include <cstring>
 
 #define PORT "41026"
 #define LOCALHOST "127.0.0.1"
@@ -138,7 +139,7 @@ int main(void)
 			* 2. Inventory == 0 --> return 0
 			* 3. Success --> return #inventory
 			* */
-			size_t length = std::strlen(bookcode);
+			size_t length = strlen(bookcode);
 			status[0] = bookcode[length - 1];
 			status[1] = '\0';
 			bookcode[length - 1] = '\0';
