@@ -54,11 +54,13 @@ void *get_in_addr(struct sockaddr *sa)
 // Decode username and password
 void splitWords(const char* input, char*& word1, char*& word2) {
     int length = (input[0] - '0') * 10 + (input[1] - '0');
+    int length2 = (input[2] - '0') * 10 + (input[3] - '0');
     word1 = new char[length + 1]; 
-    word2 = new char[strlen(input) - length + 1]; 
-    strncpy(word1, input + 2, length);
+    word2 = new char[length2 + 1]; 
+    strncpy(word1, input + 4, length);
     word1[length] = '\0'; 
-    strcpy(word2, input + 2 + length);
+    strncpy(word2, input + 4 + length, length2);
+    word2[length2] = '\0'; 
 }
 
 // load file to local map
@@ -83,6 +85,12 @@ int loadMembers() {
     return 0;
 }
 
+void prepareBookcode(const char* input, char*& bookcode){    
+    int length = (input[0] - '0') * 10 + (input[1] - '0');
+    bookcode = new char[length + 1]; 
+    strncpy(bookcode, input + 2, length);
+    bookcode[length] = '\0'; 
+}
 // Check if the bookcode start with S,L,H
 bool isValidQuery(const char* str) {
     if (str == nullptr || str[0] == '\0') {
@@ -112,6 +120,7 @@ int main()
     char clientmsg[MAXDATASIZE];
     char* username;
     char* password;
+    char* bookcode;
     
 
     memset(&hints, 0, sizeof hints);
@@ -269,7 +278,7 @@ int main()
 				perror("recv");
 				exit(1);
 			}
-            
+        
             
             if(strlen(clientmsg) == 0 ) {
                 // null message received when user logout
@@ -285,17 +294,18 @@ int main()
              */
             
             else if(strlen(clientmsg) < 12){
+                prepareBookcode(clientmsg,bookcode);
                 std::cout << "Main Server received the book request from client using TCP over port " << MY_TCP_PORT <<"."<< std::endl;
-                std::string decodedBookcode( clientmsg );
+                std::string decodedBookcode( bookcode );
                 decodedBookcode.pop_back();
                 // std::cout << "Received data: " << clientmsg << std::endl;
-                if(!isValidQuery(clientmsg)){
+                if(!isValidQuery(bookcode)){
                     std::cout << "Did not find " << decodedBookcode << " in the book code list." << std::endl;
                     if (send(child_fd, &libNotExist, sizeof(libNotExist), 0) == -1) perror("send");
                 } else{
-                    if(clientmsg[0]=='S'){
+                    if(bookcode[0]=='S'){
                         std::cout << "Found " << decodedBookcode << " located at Server S. Send to Server S." << std::endl;
-                        if ((numbytes = sendto(udp_sockfd, clientmsg, strlen(clientmsg), 0,
+                        if ((numbytes = sendto(udp_sockfd, bookcode, strlen(bookcode), 0,
                         processS->ai_addr, processS->ai_addrlen)) == -1) {
                             perror("talker: sendto");
                             exit(1);
@@ -314,9 +324,9 @@ int main()
                     if (send(child_fd, &fromBackend, sizeof(fromBackend), 0) == -1) perror("send");
                     printf("Main Server sent the book status to the client.\n");
                     }
-                    if(clientmsg[0]=='L'){
+                    if(bookcode[0]=='L'){
                         std::cout << "Found " << decodedBookcode << " located at Server L. Send to Server L." << std::endl;
-                        if ((numbytes = sendto(udp_sockfd, clientmsg, strlen(clientmsg), 0,
+                        if ((numbytes = sendto(udp_sockfd, bookcode, strlen(bookcode), 0,
                         processL->ai_addr, processL->ai_addrlen)) == -1) {
                             perror("talker: sendto");
                             exit(1);
@@ -335,9 +345,9 @@ int main()
                     if (send(child_fd, &fromBackend, sizeof(fromBackend), 0) == -1) perror("send");
                     printf("Main Server sent the book status to the client.\n");
                     }
-                    if(clientmsg[0]=='H'){
+                    if(bookcode[0]=='H'){
                         std::cout << "Found " << decodedBookcode << " located at Server H. Send to Server H." << std::endl;
-                        if ((numbytes = sendto(udp_sockfd, clientmsg, strlen(clientmsg), 0,
+                        if ((numbytes = sendto(udp_sockfd, bookcode, strlen(bookcode), 0,
                         processH->ai_addr, processH->ai_addrlen)) == -1) {
                             perror("talker: sendto");
                             exit(1);

@@ -54,12 +54,15 @@ void cipher(std::string& text) {
 }
 
 // encode the username and the password to send it to the main server.
-// len(username)+ username + password
+// len(username)+len(password)+ username + password
 std::string encode(const std::string& str1, const std::string& str2) {
     int len = str1.length();
+    int len2 = str2.length();
     std::string result;
     if(len<10) result+= "0";
     result.append(std::to_string(len));
+    if(len2<10) result+= "0";
+    result.append(std::to_string(len2));
     result += str1;
     result += str2;
     return result;
@@ -228,9 +231,9 @@ int main() {
 
         // Encode the bookcode with user identity
         if(copiedUsername=="admin"){
-            encodedBookcode = bookcode + "A";
+            encodedBookcode = std::to_string(bookcode.length()+1) + bookcode + "A";
         } else {
-            encodedBookcode = bookcode + "U";
+            encodedBookcode = std::to_string(bookcode.length()+1) + bookcode + "U";
         }
 
         // Send to Main Server
