@@ -305,7 +305,7 @@ int main()
                 } else{
                     if(bookcode[0]=='S'){
                         std::cout << "Found " << decodedBookcode << " located at Server S. Send to Server S." << std::endl;
-                        if ((numbytes = sendto(udp_sockfd, bookcode, strlen(bookcode), 0,
+                        if ((numbytes = sendto(udp_sockfd, clientmsg, strlen(clientmsg), 0,
                         processS->ai_addr, processS->ai_addrlen)) == -1) {
                             perror("talker: sendto");
                             exit(1);
@@ -326,7 +326,7 @@ int main()
                     }
                     if(bookcode[0]=='L'){
                         std::cout << "Found " << decodedBookcode << " located at Server L. Send to Server L." << std::endl;
-                        if ((numbytes = sendto(udp_sockfd, bookcode, strlen(bookcode), 0,
+                        if ((numbytes = sendto(udp_sockfd, clientmsg, strlen(clientmsg), 0,
                         processL->ai_addr, processL->ai_addrlen)) == -1) {
                             perror("talker: sendto");
                             exit(1);
@@ -347,7 +347,7 @@ int main()
                     }
                     if(bookcode[0]=='H'){
                         std::cout << "Found " << decodedBookcode << " located at Server H. Send to Server H." << std::endl;
-                        if ((numbytes = sendto(udp_sockfd, bookcode, strlen(bookcode), 0,
+                        if ((numbytes = sendto(udp_sockfd, clientmsg, strlen(clientmsg), 0,
                         processH->ai_addr, processH->ai_addrlen)) == -1) {
                             perror("talker: sendto");
                             exit(1);

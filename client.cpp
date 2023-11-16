@@ -230,10 +230,11 @@ int main() {
         getBookCode();
 
         // Encode the bookcode with user identity
+        if(bookcode.length() < 10 ) encodedBookcode.append("0");
         if(copiedUsername=="admin"){
-            encodedBookcode = std::to_string(bookcode.length()+1) + bookcode + "A";
+            encodedBookcode.append( std::to_string(bookcode.length()+1) + bookcode + "A");
         } else {
-            encodedBookcode = std::to_string(bookcode.length()+1) + bookcode + "U";
+            encodedBookcode.append( std::to_string(bookcode.length()+1) + bookcode + "U");
         }
 
         // Send to Main Server
