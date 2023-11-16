@@ -139,23 +139,24 @@ int main(void)
 			* 2. Inventory == 0 --> return 0
 			* 3. Success --> return #inventory
 			* */
-			int length = (bookcode[0] - '0') * 10 + (bookcode[1] - '0');
-			status[0] = bookcode[length + 1];
-			status[1] = '\0';
-			bookcode[length + 1] = '\0';
-			checkValue(bookcode,status);
+		int length = (bookcode[0] - '0') * 10 + (bookcode[1] - '0');
+		status[0] = bookcode[length + 1];
+		status[1] = '\0';
+		char* code = new char[length];
+		strncpy(code, bookcode + 2, length);
+		code[length] = '\0'; 
 			if(status[0]=='U'){
-				std::cout << "Server S received " << bookcode << " code from the Main Server." << std::endl;
+				std::cout << "Server S received " << code << " code from the Main Server." << std::endl;
 			} else {
-				std::cout << "Server S received an inventory status request for code " << bookcode << "." << std::endl;
+				std::cout << "Server S received an inventory status request for code " << code << "." << std::endl;
 			}
-			
+			checkValue(code,status);
 		if ((numbytes = sendto(sockfd, &result, sizeof(result), 0, (struct sockaddr *)&their_addr, addr_len)) == -1) {
 				perror("senderr: sendto");
 				exit(1);
 			}
 			if(status[0]=='U'){
-				std::cout << "Server S finished sending the availability status of code " << bookcode << " to the Main Server using UDP on port 41026." << std::endl;
+				std::cout << "Server S finished sending the availability status of code " << code << " to the Main Server using UDP on port 41026." << std::endl;
 			} else {
 				std::cout << "Server S finished sending the inventory status to the Main server using UDP on port 41026." << std::endl;
 			}
