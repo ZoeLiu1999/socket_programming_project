@@ -1,7 +1,5 @@
-Name: Yi Liu
-USC ID: 7717540026
 
-** Project Overview **
+Project Overview
 This project implements a book management system with features for both users and administrators. Users can check out books by entering the correct book code after logging in. Administrators have the ability to review the inventory of a specific book after logging in with the username "admin" and password "Admin." The client and the main server communicate using TCP, while the main server communicates with backend servers using UDP.
 
 
